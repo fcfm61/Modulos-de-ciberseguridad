@@ -1,0 +1,83 @@
+Hola querido usuario(a):
+En este documento te vengo a explicar como usar el script para el 4to entregable del PIA de programación para ciberseguridad del EQUIPO 1:
+	
+	-Jorge Diaz 
+	-Valeria Duron
+	-Briseidy Oranday
+a continuación voy a mencionar los requisitos (No son muchos) para poder correr el script principal desde tu equipo :D
+
+	-Correr el script desde algún SISTEMA OPERATIVO WINDOWS 10 EN ADELANTE.
+	-Tener en la misma carpeta el script principal junto con los 6 scripts de POWERSHELL con los que funciona
+	-Ejecutarlo preferentemente desde el IDLE de PYTHON
+
+Si cumples con los requisitos anteriores, no tendras muchos problemas al momento de ejecutar el script principal
+
+Hay 2 maneras de hacer que funcione el script principal:
+
+	-Por medio de argparse, ejecutandolo desde el idle con CTRL+SHIFT+F5 (Run...Customized)
+	-Por medio de la función de un menu, que esta dentro del mismo script principal en una función
+	 tendras que cambiar directamente la funcionalidad desde el codigo para poder desplegar este menu.
+
+if __name__=="__main__":
+    menu_argparse()    <------------ Para cambiar la manera en la que se ejecuta el codigo solo tienes que cambiar 
+				     a "menu()" editandolo directamente desde el script
+
+MODALIDAD ARGPARSE:
+
+Si ejecuta el codigo con el menu de argparse debe ser consciente de:
+
+	-Solo se podra realizar una tarea por ejecución
+
+El unico argumento que necesita para hacer que el script funcione es --->"-t"<--- al cual se le deben agregar los siguientes parametros según sea
+la tarea que desea realizar:
+
+	1.-historial
+	2.-disco
+	3.-getip
+	4.-scanip
+	5.-honeypots
+	6.-scanadpt
+
+1.-historial -------------> Genera un historial de los procesos ejecutados durante un dia especifico dentro del equipo, no se puede generar
+			    un historial mas antigüo a 4 dias de la fecha actual (Al menos asi en el equipo en el que se probo el script)
+			    la fecha se tiene que ingresar (AAAA/MM/DD). Este script se reutilizo del 1er entregable que uso un integrante del equipo (Jorge Diaz).
+
+2.-disco -----------------> Realiza un escaneo del uso del disco del equipo. Este script se reutilizo del 1er entregable que uso una integrante del equipo (Valeria Duron),
+			    no es necesario ingresar ningun tipo de dato para su ejecución.
+
+3.-getip -----------------> Obtiene la ip de un dominio especifico (Ej. Google.com). El dominio se tiene que ingresar por el usuario
+
+4.-scanip ----------------> Escanea la ip de un dominio especifico con el uso de la API de Abuse Database para verificar si es maliciosa o no. Puedes utilizar la IP 
+			    obtenida de la tarea getip o ingresar una con la que ya cuentes, el escaneo te devuelve un mensaje si la ip es sospechosa o no 
+			    la IP tiene que ser IPV4 y tiene que ser ingresada por el usuario. Este script se reutilizo y adapto del script del 3er Entregable que 
+			    realizo una integrante del equipo (Briseidy Oranday)
+
+5.-honeypots -------------> Genera honeypots con el API de SHODAN. esta tarea puede mostrar complicaciones al momento de ejecutarla debido a que si la apikey que se 
+			    usa no tiene los suficientes privilegios simplemente no se generan los Honeypots. 2 de las ApiKeys de los integrantes del
+			    no cuentan con los privilegios, sientase libre de probar el script con su propia Api-key de SHODAN (Editarla desde el script de POWERSHELL)
+
+6.-scanadpt --------------> Realiza un escaneo de los adaptadores de red del equipo. Este script se reutilizo del 1er Entregable fue realizado por una integrante del
+			    equipo (Valeria Duron). No es necesario ingresar ningun tipo de dato y/o parametro para la realización de esta tarea.
+
+
+MODALIDAD MENU:
+
+Al ejecutar el script con el menu sin ARGPARSE solo sera necesario elegir una de las opciones:
+
+ 	Elija una de las 5 tareas a realizar:
+        1--Historial de procesos
+        2--Escaneo de adaptadores de red
+        3--Generación de Honeypots con el API de SHODAN
+        4--Busqueda de dirección de IP de un dominio 
+	5--Analizis de dirección IP
+	6--Escaneo de uso del disco
+
+Donde cada opción ejecuta una tarea especifica, ya ejecutando el programa se especifica que con el "7" se puede parar el script y si no se ingresan ningún
+caracter del menu, el script se seguira ejecutando hasta que se ingrese una de las opciones.
+
+
+
+
+
+
+

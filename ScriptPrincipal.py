@@ -40,20 +40,21 @@ def honeypots(): #Realizada por Valeria Duron
         print(f"A ocurrido un error en la generación de Honeypots: {e}")
         logging.error("A ocurrido un error en la generación de honeypots:" + str(e))
         
-def obtener_ips():
+def get_ips():
     try:
-        dom=input("Ingrese el dominio al que le quiera sacar la IP:\n")
-        print("Obteniendo ip.....")
-        lineaPS = "powershell -Executionpolicy ByPass -Command Resolve_DnsName -Name " + dom
-        runningProcesses = subprocess.run(lineaPS, capture_output=True, text=True)
-        print(runningProcesses.stdout)
+        dominio = input("Ingrese un dominio:\n")
+        lineaPS = "powershell -Executionpolicy ByPass -Command resolve-dnsname -Name "+ dominio
+        runningProcesses = subprocess.check_output(lineaPS)
+        print(runningProcesses.decode())
+        logging.info(f"Información sobre {dominio}:\n{runningProcesses}")
     except Exception as e:
         print(f"A ocurrido un error en la busqueda de la dirección IP: {e}")
         logging.error("A ocurrido un error al sacar la dirección IP del dominio:" + str(e))
 def IPS_scan():#Realizado por Briseidy
-    print("Escaneando IP....")#Hay que editar la dirección IP directamente del codigo de powershell
+    ip=input("Ingresa una de las direcciones IPV4 de algún dominio:\n")
+    print("Escaneando IP....")
     try:
-        LinPS="powershell -Executionpolicy Bypass -File API.ps1"
+        LinPS="powershell -Executionpolicy Bypass -File API.ps1 -ipAddress "+ip
         runNetscan=subprocess.run(LinPS, capture_output=True, text=True)
         print("Escaneo completado")
         print(runNetscan.stdout)
@@ -62,15 +63,24 @@ def IPS_scan():#Realizado por Briseidy
         print(f"A ocurrido un error en la generación de Honeypots: {e}")
         logging.error("A ocurrido un error en la generación de honeypots:" + str(e))
 
-
-
+def disk_ussage():
+    print("Obteniendo escaneo de uso del disco del equipo....")
+    try:
+        LinPS="powershell -Executionpolicy Bypass -File Monitoreo_Disco.ps1"
+        runNetscan=subprocess.run(LinPS, capture_output=True, text=True)
+        print("Escaneo completado")
+        print(runNetscan.stdout)
+        logging.info("Escaneo del disco completado con exito")
+    except Exception as e:
+        print(f"A ocurrido un error en el escaneo del disco: {e}")
+        logging.error("A ocurrido un error en el escaneo del disco:" + str(e))
 
 def menu():
     print("Elija una de las 5 tareas a realizar:")
     print("1--Historial de procesos\n2--Escaneo de adaptadores de red")
-    print("3--Generación de Honeypots con el API de SHODAN\n4--Busqueda de dirección de IP de un dominio\n5--Analizis de dirección IP")
+    print("3--Generación de Honeypots con el API de SHODAN\n4--Busqueda de dirección de IP de un dominio\n5--Analizis de dirección IP\n6--Escaneo de uso del disco")
     while True: 
-        op=input("Elija una opción del 1 al 5, si desea salir del programa oprima el numero 6.\n")
+        op=input("Elija una opción del 1 al 6, si desea salir del programa oprima el numero 7.\n")
 
         if op=="1":
             process_history()
@@ -83,12 +93,43 @@ def menu():
         elif op=="5":
             IPS_scan()
         elif op=="6":
+            disk_ussage()
+        elif op=="7":
             print("Saliendo del programa.....")
             break
         else:
             print("Opción no valida")
+
+def menu_argparse():
+    try:
+        parser=argparse.ArgumentParser()
+        parser.add_argument("-t", dest="tarea", help="'historial','disco','getip','scanip','honeypots','scanadpt'")
+        args=parser.parse_args()
+        if args.tarea == "historial":
+            process_history()
+        elif args.tarea == "scanadpt":
+            Netad_scan()
+        elif args.tarea == "honeypots":
+            honeypots()
+        elif args.tarea == "getip":
+            get_ips()
+        elif args.tarea == "scanip":
+            IPS_scan()
+        elif args.tarea == "disco":
+            disk_ussage()
+    except Exception as e:
+        print(f"El codigo de error es: {e}")
+
 if __name__=="__main__":
-    menu()
+    menu_argparse()
+
+
+
+
+
+
+    
+
 
     
 
